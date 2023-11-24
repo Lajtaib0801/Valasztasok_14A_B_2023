@@ -55,12 +55,48 @@ export default class Megoldas {
         this.#eredmenyek.filter(x => x.pártJel2 == "Független").forEach(x => (sumFuggetlen += x.szavazatok));
 
         const partok: Map<string, string> = new Map<string, string>([
-            ["Gyümölcsevők Pártja", (sumGyep / this.szavazottakSzama() * 100).toFixed(2)],
-            ["Húsevők Pártja", (sumHep / this.szavazottakSzama() * 100).toFixed(2)],
-            ["Tejivók Szövetsége", (sumTisz / this.szavazottakSzama() * 100).toFixed(2)],
-            ["Zöldségevők Párja", (sumZep / this.szavazottakSzama() * 100).toFixed(2)],
-            ["Független jelöltek", (sumFuggetlen / this.szavazottakSzama() * 100).toFixed(2)],
+            ["Gyümölcsevők Pártja", ((sumGyep / this.szavazottakSzama()) * 100).toFixed(2)],
+            ["Húsevők Pártja", ((sumHep / this.szavazottakSzama()) * 100).toFixed(2)],
+            ["Tejivók Szövetsége", ((sumTisz / this.szavazottakSzama()) * 100).toFixed(2)],
+            ["Zöldségevők Párja", ((sumZep / this.szavazottakSzama()) * 100).toFixed(2)],
+            ["Független jelöltek", ((sumFuggetlen / this.szavazottakSzama()) * 100).toFixed(2)],
         ]);
         return partok;
+    }
+
+    toSzazalek(szam: number): string {
+        return ((szam / this.szavazottakSzama()) * 100).toFixed(2);
+    }
+
+    partokraLeadottSzavazatokAranya2(): Map<string, number> {
+        const partok: Map<string, number> = new Map<string, number>();
+        this.#eredmenyek.forEach(element => {
+            if (!partok.has(element.párt)) partok.set(element.párt, 0);
+        });
+        for (const [key, value] of partok) {
+            this.#eredmenyek.forEach(x => {
+                if (x.párt == key) {
+                    let sum: number = value;
+                    sum += x.szavazatok;
+                    partok.set(key, sum);
+                }
+            });
+        }
+        for (const [key, value] of partok) {
+            partok.set(key, parseInt(this.toSzazalek(value)));
+        }
+        return partok;
+    }
+
+    maxSzavazatosJelolt(): Array<ValasztasiEredmeny> {
+        let maxSzavazatok: number = 0;
+        for (const item of this.#eredmenyek) {
+            if (item.szavazatok > maxSzavazatok) maxSzavazatok = item.szavazatok;
+        }
+        let maxosJelolt: Array<ValasztasiEredmeny> = Array();
+        for (const item of this.#eredmenyek) {
+            if (item.szavazatok == maxSzavazatok) maxosJelolt.push(item);
+        }
+        return maxosJelolt;
     }
 }

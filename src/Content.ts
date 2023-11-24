@@ -29,9 +29,9 @@ export default function content(req: http.IncomingMessage, res: http.ServerRespo
     const m: Megoldas = new Megoldas("szavazatok.txt");
     res.write(`2. feladat:\n`);
     res.write(`A helyhatósági választáson ${m.jeloltekSzama()} képviselőjelölt indult.\n`);
-
+    res.write(`\n`);
     //res.write("Egyszerű Hello World! (2023/2024)\n");
-
+    res.write(`3. feladat:\n`);
     // Tetszőleges html teg-ek és attribútumok beépítése:
     //res.write("<span style='color: blue;'><i>Színes és dőlt Hello World!'</i></span>\n");
 
@@ -46,14 +46,17 @@ export default function content(req: http.IncomingMessage, res: http.ServerRespo
 
     res.write(`${m.jeloltSzavazatainakSzama(nev)}\n`);
 
-    res.write(`4. feladat:\n`);
+    res.write(`\n4. feladat:\n`);
     res.write(`A választáson ${m.szavazottakSzama()} állampolgár, a jogosultak ${m.
     szavazottArany()}%-a vett részt.\n`);
-    res.write(`5. feladat\n`);
-    for (let [key, value] of m.partokraLeadottSzavazatokAranya().entries()) {
+    res.write(`\n5. feladat\n`);
+    for (let [key, value] of m.partokraLeadottSzavazatokAranya2().entries()) {
         res.write(`${key}= ${value} %\n`);
     }
-
+    res.write(`\n6. feladat\n`);
+    for (const item of m.maxSzavazatosJelolt()) {
+        res.write(`${item.nev} ${item.pártJel2}\n`);
+    }
 
 
     // <---- Fejezd be a kódolást
