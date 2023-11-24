@@ -46,6 +46,16 @@ export default function content(req: http.IncomingMessage, res: http.ServerRespo
 
     res.write(`${m.jeloltSzavazatainakSzama(nev)}\n`);
 
+    res.write(`4. feladat:\n`);
+    res.write(`A választáson ${m.szavazottakSzama()} állampolgár, a jogosultak ${m.
+    szavazottArany()}%-a vett részt.\n`);
+    res.write(`5. feladat\n`);
+    for (let [key, value] of m.partokraLeadottSzavazatokAranya().entries()) {
+        res.write(`${key}= ${value} %\n`);
+    }
+
+
+
     // <---- Fejezd be a kódolást
 
     res.write("</pre></form></body></html>");
