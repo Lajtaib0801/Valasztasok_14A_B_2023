@@ -50,7 +50,7 @@ export default function content(req: http.IncomingMessage, res: http.ServerRespo
     res.write(`A választáson ${m.szavazottakSzama()} állampolgár, a jogosultak ${m.
     szavazottArany()}%-a vett részt.\n`);
     res.write(`\n5. feladat\n`);
-    for (let [key, value] of m.partokraLeadottSzavazatokAranya2().entries()) {
+    for (let [key, value] of m.partokraLeadottSzavazatokAranya().entries()) {
         res.write(`${key}= ${value} %\n`);
     }
     res.write(`\n6. feladat\n`);

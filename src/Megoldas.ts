@@ -64,8 +64,8 @@ export default class Megoldas {
         return partok;
     }
 
-    toSzazalek(szam: number): string {
-        return ((szam / this.szavazottakSzama()) * 100).toFixed(2);
+    toSzazalek(szam: number): number {
+        return (szam / this.szavazottakSzama()) * 100;
     }
 
     partokraLeadottSzavazatokAranya2(): Map<string, number> {
@@ -74,28 +74,33 @@ export default class Megoldas {
             if (!partok.has(element.párt)) partok.set(element.párt, 0);
         });
         for (const [key, value] of partok) {
+            let sum: number = value;
             this.#eredmenyek.forEach(x => {
                 if (x.párt == key) {
-                    let sum: number = value;
                     sum += x.szavazatok;
                     partok.set(key, sum);
                 }
             });
         }
         for (const [key, value] of partok) {
-            partok.set(key, parseInt(this.toSzazalek(value)));
+            partok.set(key, this.toSzazalek(value));
         }
         return partok;
     }
 
+    #maxSzavazatszam(): number {
+        // let maxSzavazatok: number = 0;
+        // for (const item of this.#eredmenyek) {
+        //     if (item.szavazatok > maxSzavazatok) maxSzavazatok = item.szavazatok;
+        // }
+        // return maxSzavazatok;
+        return Math.max(...this.#eredmenyek.map(x => x.szavazatok));
+    }
+
     maxSzavazatosJelolt(): Array<ValasztasiEredmeny> {
-        let maxSzavazatok: number = 0;
-        for (const item of this.#eredmenyek) {
-            if (item.szavazatok > maxSzavazatok) maxSzavazatok = item.szavazatok;
-        }
         let maxosJelolt: Array<ValasztasiEredmeny> = Array();
         for (const item of this.#eredmenyek) {
-            if (item.szavazatok == maxSzavazatok) maxosJelolt.push(item);
+            if (item.szavazatok == this.#maxSzavazatszam()) maxosJelolt.push(item);
         }
         return maxosJelolt;
     }
