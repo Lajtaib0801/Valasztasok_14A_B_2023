@@ -104,4 +104,57 @@ export default class Megoldas {
         }
         return maxosJelolt;
     }
+
+    #nyertesKepviselo(kerület: number): ValasztasiEredmeny | null {
+        let nyertes: ValasztasiEredmeny | null = null;
+        for (const iterator of this.#eredmenyek) {
+            if (iterator.kerület == kerület) {
+                if (nyertes == null) {
+                    nyertes = iterator
+                }
+                else if (nyertes.szavazatok < iterator.szavazatok) {
+                    nyertes = iterator
+                }
+            }
+        }
+        return nyertes;
+    }
+
+    #kepviselokLettek(): Map<number, ValasztasiEredmeny | null> {
+        const kepviselok: Map<number, ValasztasiEredmeny | null> = new Map<number, ValasztasiEredmeny | null>([
+            [1, null],
+            [2, null],
+            [3, null],
+            [4, null],
+            [5, null],
+            [6, null],
+            [7, null],
+            [8, null],
+        ]);
+        for (const [key, value] of kepviselok) {
+            for (const szavazat of this.#eredmenyek) {
+                if (szavazat.kerület == key) {
+                    if (value == null) {
+                        kepviselok.set(key, szavazat);
+                    } else if (value.szavazatok < szavazat.szavazatok) {
+                        kepviselok.set(key, szavazat);
+                    }
+                }
+            }
+        }
+        return kepviselok;
+    }
+
+    txtLetrehoz(): void {
+        const ki: Array<string> = Array();
+        for (const [k, v] of this.#kepviselokLettek()) {
+            ki.push(`${v?.kerület}.kerület: ${v?.nev} ${v?.pártJel2}`);
+        }
+        const output: string = ki.join("\r\n");
+        try {
+            fs.writeFileSync("kepviselok.txt", output);
+        } catch (error) {
+            throw Error((error as Error).message)
+        }
+    }
 }

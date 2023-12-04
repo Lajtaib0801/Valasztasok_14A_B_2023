@@ -57,7 +57,12 @@ export default function content(req: http.IncomingMessage, res: http.ServerRespo
     for (const item of m.maxSzavazatosJelolt()) {
         res.write(`${item.nev} ${item.pártJel2}\n`);
     }
-
+    m.txtLetrehoz();
+    const kepviselok = fs.readFileSync("kepviselok.txt", "utf8");
+    res.write(`\n7. feladat:\n`);
+    for (const iterator of kepviselok) {
+        res.write(`${iterator}`);
+    }
 
     // <---- Fejezd be a kódolást
 
