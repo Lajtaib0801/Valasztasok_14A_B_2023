@@ -1,4 +1,4 @@
-export default class ValasztasiEredmeny {
+export default class VálasztásiEredmény {
     #kerület: number;
     #szavazatok: number;
     #vnév: string;
@@ -17,7 +17,7 @@ export default class ValasztasiEredmeny {
         return this.#kerület;
     }
 
-    get pártJel2(): string {
+    public get pártJel2(): string {
         return this.#pártJel == "-" ? "Független" : this.#pártJel;
     }
 
@@ -26,12 +26,10 @@ export default class ValasztasiEredmeny {
             ["GYEP", "Gyümölcsevők Pártja"],
             ["HEP", "Húsevők Pártja"],
             ["TISZ", "Tejivók Szövetsége"],
-            ["ZEP", "Zöldségevők Párja"],
+            ["ZEP", "Zöldségevők Pártja"],
             ["-", "Független jelöltek"],
         ]);
-        // if (nevMap.has(this.#pártJel)) return nevMap.get(this.#pártJel) as string;
         return nevMap.get(this.#pártJel) as string;
-        // return "Hiba!";
     }
 
     constructor(sor: string) {
